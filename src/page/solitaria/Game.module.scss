@@ -1,0 +1,14 @@
+.game {
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-grid {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
+}
