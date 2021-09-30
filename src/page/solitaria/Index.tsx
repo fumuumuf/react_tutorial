@@ -21,11 +21,7 @@ const Index = ({ history }: Props) => {
           <li>飛び越えられた駒は盤から取り除く。</li>
           <li>駒が1つになったら成功。中央に1つ残すのが最善とされる。</li>
         </ul>
-        <a
-          href={
-            'https://ja.wikipedia.org/wiki/%E3%83%9A%E3%82%B0%E3%83%BB%E3%82%BD%E3%83%AA%E3%83%86%E3%83%BC%E3%83%AB'
-          }
-        >
+        <a href="https://ja.wikipedia.org/wiki/%E3%83%9A%E3%82%B0%E3%83%BB%E3%82%BD%E3%83%AA%E3%83%86%E3%83%BC%E3%83%AB">
           https://ja.wikipedia.org/wiki/ペグ・ソリテール
         </a>
         より引用

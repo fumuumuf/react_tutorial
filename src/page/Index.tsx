@@ -6,8 +6,12 @@ type Props = RouteComponentProps
 const Index = ({ history }: Props) => {
   return (
     <div>
-      <h1>Web 習作</h1>
-      <Link to="/solitaria">Page 2</Link>
+      <h1>React 習作</h1>
+      <ul>
+        <li>
+          <Link to="/solitaria">ペグソリティア</Link>
+        </li>
+      </ul>
     </div>
   )
 }
