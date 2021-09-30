@@ -143,24 +143,40 @@ export const judge = (g: Array<Array<number>>) => {
 }
 
 function toState(g: Array<Array<number>>) {
-  let res = 0
+  let res = BigInt(0)
+  const b1 = BigInt(1)
   for (let pos = 0; pos < MI; pos++) {
     const [i, j] = iToPos(pos)
-    if (g[i][j] == 1) res |= 1 << pos
+    if (g[i][j] == 1) res |= b1 << BigInt(pos)
   }
   return res
 }
 
-function rotState(state: number) {
-  let res = 0
+function rotState(state: bigint) {
+  let res = BigInt(0)
+  const b1 = BigInt(1)
   for (let pos = 0; pos < MI; pos++) {
-    if ((res >> pos) & 1) {
+    if ((res >> BigInt(pos)) & b1) {
       let [i, j] = iToPos(pos)
       // rotate 90
       const tmp = i
       i = H - 1 - j
       j = tmp
-      res |= 1 << posToI(i, j)
+      res |= b1 << BigInt(posToI(i, j))
+    }
+  }
+  return res
+}
+
+function flipState(state: bigint) {
+  let res = BigInt(0)
+  const b1 = BigInt(1)
+  for (let pos = 0; pos < MI; pos++) {
+    if ((res >> BigInt(pos)) & b1) {
+      // eslint-disable-next-line prefer-const
+      let [i, j] = iToPos(pos)
+      j = W - 1 - j
+      res |= b1 << BigInt(posToI(i, j))
     }
   }
   return res
@@ -175,9 +191,15 @@ function revMove(g: Array<Array<number>>, y: number, x: number, d: number) {
   g[y][x] = 1
 }
 
+function getRandomIntInclusive(min: number, max: number) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1) + min) //The maximum is inclusive and the minimum is inclusive
+}
+
 function dfs(
   g: Array<Array<number>>,
-  arrived: Set<number>
+  arrived: Set<bigint>,
 ): Array<Array<Array<number>>> | null {
   const state = toState(g)
   if (arrived.has(state)) return null
@@ -210,6 +232,7 @@ function dfs(
     let st = state
     for (let i = 0; i < 4; i++) {
       arrived.add(st)
+      arrived.add(flipState(st))
       st = rotState(st)
     }
   }
@@ -222,8 +245,10 @@ export function solve(
   g = g.map((v) => {
     return [...v]
   })
-  const arrived = new Set<number>()
+  const arrived = new Set<bigint>()
+
   const res = dfs(g, arrived)
+
   if (res != null) {
     return res.reverse()
   } else {

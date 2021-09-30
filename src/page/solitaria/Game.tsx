@@ -135,6 +135,12 @@ const Game: React.FC = () => {
       alert('この状態からは解けません')
     }
   }
+
+  const canAutoSolve = () => {
+    const rest = 32 - stepNo - 1
+
+    return rest <= 20
+  }
   return (
     <div className={styles['game']}>
       <div className={styles['game-grid']}>
@@ -155,7 +161,12 @@ const Game: React.FC = () => {
         <Button variant="outlined" color="primary" onClick={resetHist}>
           リセット
         </Button>
-        <Button variant="outlined" color="primary" onClick={solve}>
+        <Button
+          variant="outlined"
+          disabled={!canAutoSolve()}
+          color="primary"
+          onClick={solve}
+        >
           続きを自動で解く
         </Button>
       </Stack>
