@@ -29,6 +29,10 @@ const POS = Array.from(new Array(H), () => new Array(W).fill(0))
   }
 })()
 
+function posToI(y: number, x: number) {
+  return POS[y][x]
+}
+
 const can_move = (g: Array<Array<number>>, y: number, x: number, d: number) => {
   if (g[y][x] != 1) return false
   for (let i = 0; i < 2; i++) {
@@ -147,6 +151,21 @@ function toState(g: Array<Array<number>>) {
   return res
 }
 
+function rotState(state: number) {
+  let res = 0
+  for (let pos = 0; pos < MI; pos++) {
+    if ((res >> pos) & 1) {
+      let [i, j] = iToPos(pos)
+      // rotate 90
+      const tmp = i
+      i = H - 1 - j
+      j = tmp
+      res |= 1 << posToI(i, j)
+    }
+  }
+  return res
+}
+
 function revMove(g: Array<Array<number>>, y: number, x: number, d: number) {
   for (let i = 0; i < 2; i++) {
     const ni = y + DY[d] * (i + 1)
@@ -187,7 +206,13 @@ function dfs(
       }
     }
   }
-  arrived.add(state)
+  {
+    let st = state
+    for (let i = 0; i < 4; i++) {
+      arrived.add(st)
+      st = rotState(st)
+    }
+  }
   return null
 }
 
