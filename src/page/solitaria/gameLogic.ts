@@ -191,7 +191,7 @@ function revMove(g: Array<Array<number>>, y: number, x: number, d: number) {
   g[y][x] = 1
 }
 
-const DFS_LIMIT = 100000
+const DFS_LIMIT = 200000
 
 function dfs(
   g: Array<Array<number>>,
