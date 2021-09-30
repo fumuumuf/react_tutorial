@@ -191,18 +191,15 @@ function revMove(g: Array<Array<number>>, y: number, x: number, d: number) {
   g[y][x] = 1
 }
 
-function getRandomIntInclusive(min: number, max: number) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1) + min) //The maximum is inclusive and the minimum is inclusive
-}
+const DFS_LIMIT = 100000
 
 function dfs(
   g: Array<Array<number>>,
-  arrived: Set<bigint>,
+  arrived: Set<bigint>
 ): Array<Array<Array<number>>> | null {
   const state = toState(g)
   if (arrived.has(state)) return null
+  if (arrived.size >= DFS_LIMIT) return null
   const judge_res = judge(g)
   if (judge_res == 1) {
     return []
@@ -211,6 +208,7 @@ function dfs(
   }
   for (let posi = 0; posi < MI; posi++) {
     const [i, j] = iToPos(posi)
+    if (g[i][j] != 1) continue
     for (let di = 0; di < 4; di++) {
       if (can_move(g, i, j, di)) {
         moveToDirection(g, i, j, di)
@@ -241,7 +239,7 @@ function dfs(
 
 export function solve(
   g: Array<Array<number>>
-): Array<Array<Array<number>>> | null {
+): Array<Array<Array<number>>> | number {
   g = g.map((v) => {
     return [...v]
   })
@@ -252,6 +250,7 @@ export function solve(
   if (res != null) {
     return res.reverse()
   } else {
-    return res
+    if(arrived.size >= DFS_LIMIT)return -2
+    else return -1
   }
 }

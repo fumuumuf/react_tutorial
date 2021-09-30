@@ -128,11 +128,13 @@ const Game: React.FC = () => {
   const solve = () => {
     const res = GameLogic.solve(currentGrid())
 
-    if (res) {
+    if (res instanceof Array) {
       setHistory([...history.slice(0, stepNo + 1), ...res])
       setPlayHistory(true)
-    } else {
-      alert('この状態からは解けません')
+    } else if (res === -1) {
+      alert('この状態からは解けませんでした')
+    } else if (res === -2) {
+      alert('探索に時間がかかりすぎるため解けませんでした. もう少し手を進めてください.')
     }
   }
 
@@ -161,12 +163,7 @@ const Game: React.FC = () => {
         <Button variant="outlined" color="primary" onClick={resetHist}>
           リセット
         </Button>
-        <Button
-          variant="outlined"
-          disabled={!canAutoSolve()}
-          color="primary"
-          onClick={solve}
-        >
+        <Button variant="outlined" color="primary" onClick={solve}>
           続きを自動で解く
         </Button>
       </Stack>
